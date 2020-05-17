@@ -445,6 +445,7 @@ namespace Switcheroo
             }
             else
             {
+                AddPrefixNumbersToFormattedTitle(_filteredWindowList);
                 lb.DataContext = _filteredWindowList;
             }
 
@@ -454,6 +455,16 @@ namespace Switcheroo
             tb.Focus();
             CenterWindow();
             ScrollSelectedItemIntoView();
+        }
+
+        private static void AddPrefixNumbersToFormattedTitle(ICollection<AppWindowViewModel> windowCollection)
+        {
+            var windowList = windowCollection.ToList();
+            for (var i = 0; (i < 10) && (i < windowList.Count); i++)
+            {
+                var numberPrefix = new XamlHighlighter().Highlight(new[] { new StringPart("" + ((i + 1) % 10) + "  ", true) });
+                windowList[i].FormattedTitle = numberPrefix + windowList[i].FormattedTitle;
+            }
         }
 
         private static bool AreWindowsRelated(SystemWindow window1, SystemWindow window2)
