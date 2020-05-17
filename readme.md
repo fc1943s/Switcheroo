@@ -7,7 +7,7 @@ It is distributed as-is with no warranty or guarantees whatsoever. Your patches 
 Download
 --------
 
-Grab the binaries **[here](https://github.com/elig0n/Switcheroo/releases)**
+Grab the binaries **[here](https://github.com/daanzu/Switcheroo/releases)**
 
 Custom Features
 -------
@@ -42,7 +42,4 @@ Close selected window          | `Ctrl + W`,`Alt + X`|
 Options                        | `Alt + O`       |
 Toggle sort by process name    | `Alt + S`       |
 Dismiss Switcheroo             | `Esc`           |
-
-Discord
-------
 Please join our [Discord channel](https://discord.gg/8zMj7fz) for further discussions.
