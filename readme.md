@@ -26,7 +26,16 @@ Custom Features
 - Code cleaning and refactoring, 
 - Custom hotkeys configuration
 
-Shortcuts
+Tips
+----
+
+- You can filter by process name (.exe file) with the "`.`" character:
+    - "`text.`" filters for processes with "text" in their process name.
+    - "`text.readme`" filters for processes with "text" in their process name, and "readme" in their window title.
+    - "`.`" is a shortcut that filters for only processes that match the current foreground window process.
+    - "`.readme`" filters for only processes that match the current foreground window process,  and "readme" in their window title.
+
+Usage
 -----
 
 Action                         | Shortcut        | Remarks
@@ -34,7 +43,7 @@ Action                         | Shortcut        | Remarks
 Activate Switcheroo            | `Alt + Space`   | This shortcut can be customized in _Options_
 Activate Switcheroo            | `Alt + Tab`     | Only works if enabled under _Options_
 _When Switcheroo is open_      |                 |
-Switch to selected window      | `Enter`,`Alt`   |
+Switch to selected window      | `Enter`,`Alt`   | Or single mouse click on a list entry
 Select next/previous           | `Tab`/`Shift + Tab`, `Alt + J`/`Alt + K` | 
 Selection jumps                | `Home`, `End`, `PageUp`, `PageDown`| First, Last, Page up, Page down
 Switch to n-th window          | `Alt + 1..0`    | For first ten on the list. 0 for tenth.
