@@ -43,7 +43,6 @@
     <Compile Include="IndividualCharactersMatcherTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartsWithMatcherTests.cs" />
-    <Compile Include="XamlHighlighterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -61,7 +61,6 @@
     <Compile Include="FilterResult.cs" />
     <Compile Include="WinApi.cs" />
     <Compile Include="WindowIconFinder.cs" />
-    <Compile Include="XamlHighlighter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ManagedWinapi\ManagedWinapi.csproj">

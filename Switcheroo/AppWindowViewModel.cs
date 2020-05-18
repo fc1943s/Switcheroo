@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using Switcheroo.Core;
 
 namespace Switcheroo
@@ -39,27 +40,27 @@ namespace Switcheroo
             get { return AppWindow.HWnd; }
         }
 
-        private string _formattedTitle;
+        private List<Inline> _formattedTitle;
 
-        public string FormattedTitle
+        public List<Inline> FormattedTitle
         {
             get { return _formattedTitle; }
             set
             {
                 _formattedTitle = value;
-                NotifyOfPropertyChange(() => FormattedTitle);
+                NotifyOfPropertyChange("FormattedTitle");
             }
         }
 
-        private string _formattedProcessTitle;
+        private List<Inline> _formattedProcessTitle;
 
-        public string FormattedProcessTitle
+        public List<Inline> FormattedProcessTitle
         {
             get { return _formattedProcessTitle; }
             set
             {
                 _formattedProcessTitle = value;
-                NotifyOfPropertyChange(() => FormattedProcessTitle);
+                NotifyOfPropertyChange("FormattedProcessTitle");
             }
         }
 
@@ -71,7 +72,7 @@ namespace Switcheroo
             set
             {
                 _isBeingClosed = value;
-                NotifyOfPropertyChange(() => IsBeingClosed);
+                NotifyOfPropertyChange("IsBeingClosed");
             }
         }
 
@@ -81,11 +82,11 @@ namespace Switcheroo
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void NotifyOfPropertyChange<T>(Expression<Func<T>> property)
+        private void NotifyOfPropertyChange(string property)
         {
             var handler = PropertyChanged;
             if (handler != null)
-                handler(this, new PropertyChangedEventArgs(GetPropertyName(property)));
+                handler(this, new PropertyChangedEventArgs(property));
         }
 
         private string GetPropertyName<T>(Expression<Func<T>> property)

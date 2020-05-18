@@ -28,6 +28,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -390,13 +391,18 @@ namespace Switcheroo
 
             for (var i = 0; i < _unfilteredWindowList.Count; i++)
             {
+                StringPart[] titleParts;
                 if (i < 10)
                 {
-                    _unfilteredWindowList[i].FormattedTitle = new XamlHighlighter().Highlight(new[] { new StringPart("" + (i + 1) + " ", true) });
+                    // Include highlighted number in formatted title
+                    titleParts = new[] { new StringPart("" + (i + 1) + " ", true), new StringPart(_unfilteredWindowList[i].AppWindow.Title) };
                 }
-                _unfilteredWindowList[i].FormattedTitle += new XamlHighlighter().Highlight(new[] { new StringPart(_unfilteredWindowList[i].AppWindow.Title) });
-                _unfilteredWindowList[i].FormattedProcessTitle =
-                    new XamlHighlighter().Highlight(new[] { new StringPart(_unfilteredWindowList[i].AppWindow.ProcessTitle) });
+                else
+                {
+                    titleParts = new[] { new StringPart(_unfilteredWindowList[i].AppWindow.ProcessTitle) };
+
+                }
+                _unfilteredWindowList[i].FormattedTitle = new XamlHighlighter().Highlight(titleParts).ToList();
             }
 
             FocusItemInList(focus, foregroundWindowMovedToBottom);
@@ -435,11 +441,15 @@ namespace Switcheroo
         /// </summary>
         private void CenterWindow()
         {
-            // Reset height every time to ensure that resolution changes take effect
-            Border.MaxHeight = SystemParameters.PrimaryScreenHeight;
+            // Reset height if needed to ensure that resolution changes take effect. It's slow, so avoid doing it too often.
+            var currentMaxHeight = Border.MaxHeight;
+            if (currentMaxHeight != SystemParameters.PrimaryScreenHeight)
+            {
+                Border.MaxHeight = SystemParameters.PrimaryScreenHeight;
+                // Force a rendering before repositioning the window
+                SizeToContent = SizeToContent.Manual;
+            }
 
-            // Force a rendering before repositioning the window
-            SizeToContent = SizeToContent.Manual;
             SizeToContent = SizeToContent.WidthAndHeight;
 
             // Position the window in the center of the screen
@@ -692,7 +702,9 @@ namespace Switcheroo
                     GetFormattedTitleFromBestResult(filterResult.ProcessTitleMatchResults);
             }
 
-            _filteredWindowList = new ObservableCollection<AppWindowViewModel>(filterResults.Select(r => r.AppWindow));
+            var appWindowViewModels = filterResults.Select(r => r.AppWindow).ToList();
+
+            _filteredWindowList = new ObservableCollection<AppWindowViewModel>(appWindowViewModels);
             lb.DataContext = _filteredWindowList;
             if (lb.Items.Count > 0)
             {
@@ -700,10 +712,10 @@ namespace Switcheroo
             }
         }
 
-        private static string GetFormattedTitleFromBestResult(IList<MatchResult> matchResults)
+        private static List<Inline> GetFormattedTitleFromBestResult(IList<MatchResult> matchResults)
         {
             var bestResult = matchResults.FirstOrDefault(r => r.Matched) ?? matchResults.First();
-            return new XamlHighlighter().Highlight(bestResult.StringParts);
+            return new XamlHighlighter().Highlight(bestResult.StringParts).ToList();
         }
 
         private void OnEnterPressed(object sender, ExecutedRoutedEventArgs e)

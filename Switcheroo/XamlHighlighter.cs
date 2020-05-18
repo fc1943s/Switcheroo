@@ -20,30 +20,35 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Documents;
+using System.Windows.Shapes;
 using System.Xml.Linq;
 using Switcheroo.Core.Matchers;
 
-namespace Switcheroo.Core
+namespace Switcheroo
 {
     public class XamlHighlighter
     {
-        public string Highlight(IEnumerable<StringPart> stringParts)
+        public IEnumerable<Inline> Highlight(IEnumerable<StringPart> stringParts)
         {
-            if (stringParts == null) return string.Empty;
+            if (stringParts == null)
+            {
+                yield return new Run();
+                yield break;
+            }
 
-            var xDocument = new XDocument(new XElement("Root"));
             foreach (var stringPart in stringParts)
             {
+                var run = new Run(stringPart.Value);
                 if (stringPart.IsMatch)
                 {
-                    xDocument.Root.Add(new XElement("Bold", stringPart.Value));
+                    yield return new Bold(run);
                 }
                 else
                 {
-                    xDocument.Root.Add(new XText(stringPart.Value));
+                    yield return run;
                 }
             }
-            return string.Join("", xDocument.Root.Nodes().Select(x => x.ToString()).ToArray());
         }
     }
 }
