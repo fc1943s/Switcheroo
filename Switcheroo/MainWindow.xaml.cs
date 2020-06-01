@@ -399,8 +399,7 @@ namespace Switcheroo
                 }
                 else
                 {
-                    titleParts = new[] { new StringPart(_unfilteredWindowList[i].AppWindow.ProcessTitle) };
-
+                    titleParts = new[] { new StringPart(_unfilteredWindowList[i].AppWindow.Title) };
                 }
                 _unfilteredWindowList[i].FormattedTitle = new XamlHighlighter().Highlight(titleParts).ToList();
             }
@@ -441,15 +440,11 @@ namespace Switcheroo
         /// </summary>
         private void CenterWindow()
         {
-            // Reset height if needed to ensure that resolution changes take effect. It's slow, so avoid doing it too often.
-            var currentMaxHeight = Border.MaxHeight;
-            if (currentMaxHeight != SystemParameters.PrimaryScreenHeight)
-            {
-                Border.MaxHeight = SystemParameters.PrimaryScreenHeight;
-                // Force a rendering before repositioning the window
-                SizeToContent = SizeToContent.Manual;
-            }
+            // Reset height every time to ensure that resolution changes take effect
+            Border.MaxHeight = SystemParameters.PrimaryScreenHeight;
 
+            // Force a rendering before repositioning the window
+            SizeToContent = SizeToContent.Manual;
             SizeToContent = SizeToContent.WidthAndHeight;
 
             // Position the window in the center of the screen
