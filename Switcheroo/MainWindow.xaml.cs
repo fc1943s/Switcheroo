@@ -3,7 +3,7 @@
  * http://www.switcheroo.io/
  * Copyright 2009, 2010 James Sulak
  * Copyright 2014 Regin Larsen
- * 
+ *
  * Switcheroo is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -13,7 +13,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with Switcheroo.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -247,7 +247,7 @@ namespace Switcheroo
         private void SetUpNotifyIcon()
         {
             var icon = Properties.Resources.icon;
-            
+
             var runOnStartupMenuItem = new MenuItem("Run on &Startup", (s, e) => RunOnStartup(s as MenuItem))
             {
                 Checked = new AutoStart().IsEnabled
@@ -409,7 +409,7 @@ namespace Switcheroo
 
             var firstWindow = _unfilteredWindowList.FirstOrDefault();
             var foregroundWindowMovedToBottom = false;
-            
+
             // Move first window to the bottom of the list if it's related to the foreground window
             if (firstWindow != null && AreWindowsRelated(firstWindow.AppWindow, _foregroundWindow))
             {
@@ -423,9 +423,9 @@ namespace Switcheroo
 
             for (var i = 0; i < _unfilteredWindowList.Count; i++)
             {
-                _unfilteredWindowList[i].FormattedTitle = new XamlHighlighter().Highlight(new[] { new StringPart(_unfilteredWindowList[i].AppWindow.Title) });
+                _unfilteredWindowList[i].FormattedTitle = new XamlHighlighter().Highlight(new[] { new StringPart(_unfilteredWindowList[i].AppWindow.Title) }).ToList();
                 _unfilteredWindowList[i].FormattedProcessTitle =
-                    new XamlHighlighter().Highlight(new[] { new StringPart(_unfilteredWindowList[i].AppWindow.ProcessTitle) });
+                    new XamlHighlighter().Highlight(new[] { new StringPart(_unfilteredWindowList[i].AppWindow.ProcessTitle) }).ToList();
             }
 
             if (_sortWinList == true)
@@ -435,7 +435,7 @@ namespace Switcheroo
 
             for (var i = 0; i < 10; i++)
             {
-                _unfilteredWindowList[i].FormattedTitle = new XamlHighlighter().Highlight(new[] { new StringPart("" + (i + 1) + " ", true) }) + _unfilteredWindowList[i].FormattedTitle ;
+                _unfilteredWindowList[i].FormattedTitle = new XamlHighlighter().Highlight(new[] { new StringPart("" + (i + 1) + " ", true) }).Concat(_unfilteredWindowList[i].FormattedTitle).ToList();
             }
 
             if (_sortWinList == true)
@@ -445,7 +445,6 @@ namespace Switcheroo
             }
             else
             {
-                AddPrefixNumbersToFormattedTitle(_filteredWindowList);
                 lb.DataContext = _filteredWindowList;
             }
 
@@ -463,7 +462,7 @@ namespace Switcheroo
             for (var i = 0; (i < 10) && (i < windowList.Count); i++)
             {
                 var numberPrefix = new XamlHighlighter().Highlight(new[] { new StringPart("" + ((i + 1) % 10) + "  ", true) });
-                windowList[i].FormattedTitle = numberPrefix + windowList[i].FormattedTitle;
+                windowList[i].FormattedTitle = numberPrefix.Concat(windowList[i].FormattedTitle).ToList();
             }
         }
 
@@ -790,7 +789,7 @@ namespace Switcheroo
             }
             e.Handled = true;
         }
-        
+
         private void MenuItem_Click_toFront(object sender, RoutedEventArgs e)
         {
             Switch();
@@ -903,7 +902,7 @@ namespace Switcheroo
                 ScrollSelectedItemIntoView();
             }
         }
-        
+
         private void ScrollListPageUp(object sender, ExecutedRoutedEventArgs e)
         {
             double n = NumOfVisibleRows();
@@ -932,7 +931,7 @@ namespace Switcheroo
 
         private double NumOfVisibleRows()
         {
-            return Math.Round(lb.ActualHeight / SearchGrid.ActualHeight); 
+            return Math.Round(lb.ActualHeight / SearchGrid.ActualHeight);
         }
 
         private void ScrollListHome(object sender, ExecutedRoutedEventArgs e)
@@ -950,7 +949,7 @@ namespace Switcheroo
 
             e.Handled = true;
         }
-        
+
         private void ScrollSelectedItemIntoView()
         {
             var selectedItem = lb.SelectedItem;
@@ -991,7 +990,7 @@ namespace Switcheroo
             NextItem,
             PreviousItem
         }
-        
+
         void Toggle_sortWinList()
         {
             _sortWinList = !_sortWinList;
@@ -1001,12 +1000,12 @@ namespace Switcheroo
         void Toggle_MenuItem(String text)
         {
             foreach (MenuItem mi in _notifyIcon.ContextMenu.MenuItems) {
-                if((String)mi.Text == text) 
+                if((String)mi.Text == text)
                 {
                     mi.Checked = !mi.Checked;
                 }
             }
         }
-        
+
     }
 }
