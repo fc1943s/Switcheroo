@@ -51,4 +51,7 @@ Close selected window          | `Ctrl + W`,`Alt + X`|
 Options                        | `Alt + O`       |
 Toggle sort by process name    | `Alt + S`       |
 Dismiss Switcheroo             | `Esc`           |
-Please join our [Discord channel](https://discord.gg/8zMj7fz) for further discussions.
+
+Discord
+------
+You can join the [Discord channel](https://discord.gg/xq66Yf) to further discuss development.
