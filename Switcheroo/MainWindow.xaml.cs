@@ -29,6 +29,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -744,7 +745,9 @@ namespace Switcheroo
                     GetFormattedTitleFromBestResult(filterResult.ProcessTitleMatchResults);
             }
 
-            _filteredWindowList = new ObservableCollection<AppWindowViewModel>(filterResults.Select(r => r.AppWindow));
+            var appWindowViewModels = filterResults.Select(r => r.AppWindow).ToList();
+
+            _filteredWindowList = new ObservableCollection<AppWindowViewModel>(appWindowViewModels);
             lb.DataContext = _filteredWindowList;
             if (lb.Items.Count > 0)
             {
@@ -752,10 +755,10 @@ namespace Switcheroo
             }
         }
 
-        private static string GetFormattedTitleFromBestResult(IList<MatchResult> matchResults)
+        private static List<Inline> GetFormattedTitleFromBestResult(IList<MatchResult> matchResults)
         {
             var bestResult = matchResults.FirstOrDefault(r => r.Matched) ?? matchResults.First();
-            return new XamlHighlighter().Highlight(bestResult.StringParts);
+            return new XamlHighlighter().Highlight(bestResult.StringParts).ToList();
         }
 
         private void OnEnterPressed(object sender, ExecutedRoutedEventArgs e)
