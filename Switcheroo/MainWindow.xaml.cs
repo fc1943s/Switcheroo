@@ -433,11 +433,6 @@ namespace Switcheroo
                 _unfilteredWindowList = _unfilteredWindowList.OrderBy(x => x.FormattedProcessTitle).ToList();
             }
 
-            for (var i = 0; i < 10; i++)
-            {
-                _unfilteredWindowList[i].FormattedTitle = new XamlHighlighter().Highlight(new[] { new StringPart("" + (i + 1) + " ", true) }).Concat(_unfilteredWindowList[i].FormattedTitle).ToList();
-            }
-
             if (_sortWinList == true)
             {
                 lb.DataContext = null;
@@ -445,6 +440,7 @@ namespace Switcheroo
             }
             else
             {
+                AddPrefixNumbersToFormattedTitle(_filteredWindowList);
                 lb.DataContext = _filteredWindowList;
             }
 
